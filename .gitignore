@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+*.lock
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Build outputs
+dist/
+build/
+out/
+*.tgz
+
+# Studio plugin build artifacts
+*.rbxm
+*.rbxmx
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# Local build library
+build-library/
