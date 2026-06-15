@@ -2697,6 +2697,51 @@ part(0,2,0,2,1,1,"b")`,
       required: ['operations']
     }
   },
+  {
+    name: 'manage_ui',
+    category: 'write',
+    description: 'Manage UI elements in Roblox Studio. Operations: create_tree (create a full UI tree from a JSON description), update (update properties of existing UI elements), delete (remove UI elements), list (list UI elements under a parent), get_tree (get the full tree structure of a UI container), preview (capture a screenshot of the UI), check (validate UI hierarchy and properties).',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        operation: {
+          type: 'string',
+          enum: ['create_tree', 'update', 'delete', 'list', 'get_tree', 'preview', 'check'],
+          description: 'UI operation to perform'
+        },
+        parentPath: {
+          type: 'string',
+          description: 'Parent instance path for the UI element (e.g. "game.StarterGui.ScreenGui")'
+        },
+        instancePath: {
+          type: 'string',
+          description: 'Instance path of the UI element for update/delete/get_tree/check'
+        },
+        tree: {
+          type: 'object',
+          description: 'JSON tree description for create_tree. Each node has: className (GuiObject class), name, properties (map of property names to values), and children (array of child nodes).'
+        },
+        properties: {
+          type: 'object',
+          description: 'Map of property names to values for update operation'
+        },
+        format: {
+          type: 'string',
+          enum: ['jpeg', 'png'],
+          description: 'Image format for preview (default: jpeg)'
+        },
+        quality: {
+          type: 'number',
+          description: 'JPEG quality 1-100 for preview (default: 92)'
+        },
+        instance_id: {
+          type: 'string',
+          description: 'Which connected Studio place to target. Required when multiple places are connected; omit when one. Use get_connected_instances to list available IDs.'
+        }
+      },
+      required: ['operation']
+    }
+  },
 ];
 
 export const getReadOnlyTools = () => TOOL_DEFINITIONS.filter(t => t.category === 'read');

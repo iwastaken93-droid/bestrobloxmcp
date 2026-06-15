@@ -246,6 +246,32 @@
 
 ---
 
+## D14: Phase 4 Implementation (UI Studio)
+
+**Date:** 2026-06-16
+**Decision:** Add `manage_ui` tool with full UI tree creation, editing, preview, and validation.
+**Rationale:**
+- UI Studio is a major WEPPY Pro feature that we can offer for free
+- Creating UI from JSON tree descriptions is a powerful LLM workflow (describe UI → generate tree → create in Studio)
+- `create_tree` creates a full UI hierarchy from a nested JSON spec with `UIHandlers.createUINode` and `setProperties`
+- `update` modifies existing UI elements via `resolveInstance` + property assignment
+- `delete` removes UI elements with `ChangeHistoryService` undo support
+- `list` and `get_tree` enumerate UI elements under a parent with structured property output
+- `preview` returns a structured tree + dimensions (actual screenshot deferred to `capture_screenshot`)
+- `check` validates UI hierarchy and reports common issues (parentless, visibility, overlapping, TextSize)
+- `getUIProperties` uses `typeIs` instead of `typeof === "object"` because `typeof` in Luau returns type names like "Vector2", "UDim", "UDim2", not "object"
+- `UI_CLASSES` is a `Set` for O(1) membership checks instead of a dictionary that maps keys to themselves
+
+**Constraints:**
+- All plugin handlers use `pcall()` for Studio API calls
+- All mutation handlers use `ChangeHistoryService.TryBeginRecording`/`FinishRecording`
+- `createUINode` returns `undefined` on error instead of the parent (critical for correct `instancePath`)
+- `preview` is a structured preview, not an actual screenshot (use `capture_screenshot` for screenshots)
+- `setProperties` uses `instance as any` for generic property assignment — works for all UI properties
+- All 96 tests pass after adding `manage_ui`
+
+---
+
 ## How to Add New Decisions
 
 ```markdown
@@ -263,5 +289,5 @@
 
 ## Last Updated
 
-Date: 2026-06-15
-Status: Phase 2 complete — 12 decisions recorded, build and tests passing
+Date: 2026-06-16
+Status: Phase 4 complete — 14 decisions recorded, build and tests passing

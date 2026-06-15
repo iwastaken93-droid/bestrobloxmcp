@@ -3892,4 +3892,30 @@ export class RobloxStudioTools {
     }
     return { content: [{ type: 'text', text: JSON.stringify(resp.result, null, 2) }] };
   }
+
+  // ─── manage_ui ───
+  async manageUI(
+    operation: 'create_tree' | 'update' | 'delete' | 'list' | 'get_tree' | 'preview' | 'check',
+    parentPath?: string,
+    instancePath?: string,
+    tree?: Record<string, unknown>,
+    properties?: Record<string, unknown>,
+    format?: string,
+    quality?: number,
+    instance_id?: string,
+  ) {
+    const resp = await this._callSingle('/api/manage-ui', {
+      operation,
+      parentPath,
+      instancePath,
+      tree,
+      properties,
+      format,
+      quality,
+    }, undefined, instance_id);
+    if (resp.error) {
+      return { content: [{ type: 'text', text: resp.error }] };
+    }
+    return { content: [{ type: 'text', text: JSON.stringify(resp.result, null, 2) }] };
+  }
 }

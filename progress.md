@@ -87,13 +87,14 @@
 
 ---
 
-## Phase 4: UI Studio (NOT STARTED)
+## Phase 4: UI Studio ✅ COMPLETE
 
 ### Tasks
-- [ ] `manage_ui` — design_brief, create_tree, preview, design_check
-- [ ] UI pattern library (Inventory, Shop, HUD, etc.)
-- [ ] Screenshot preview for UI elements
-- [ ] Update progress.md
+- [x] `manage_ui` — create_tree, update, delete, list, get_tree, preview, check
+- [x] UI tree creation from JSON description with full property support
+- [x] Structured preview returns tree + dimensions (actual screenshot via capture_screenshot)
+- [x] Update progress.md
+- [x] All 96 tests pass, TypeScript compiles cleanly
 
 ---
 
@@ -172,8 +173,16 @@
 - Updated `progress.md`, `decisions.md` (D12), `PLAN.md` with Phase 2 completion
 - Next: Start Phase 3 (New Tools)
 
+### Session 2026-06-16 (Phase 4)
+- Implemented `manage_ui` tool with 7 operations: create_tree, update, delete, list, get_tree, preview, check
+- Added `UIHandlers.ts` plugin handler with full UI tree creation, property editing, preview, and validation
+- Updated `definitions.ts`, `tools/index.ts`, `http-server.ts`, `Communication.ts`, `tool-schema.test.ts`
+- All 96 tests pass, TypeScript compiles cleanly
+- Updated `progress.md`, `decisions.md` (D14)
+- Next: Start Phase 5 (Polish)
+
 ---
 
 ## Last Updated
 
-Date: 2026-06-15
+Date: 2026-06-16

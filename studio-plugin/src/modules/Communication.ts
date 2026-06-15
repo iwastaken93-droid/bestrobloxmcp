@@ -24,6 +24,7 @@ import AudioHandlers from "./handlers/AudioHandlers";
 import AnimationHandlers from "./handlers/AnimationHandlers";
 import SpatialHandlers from "./handlers/SpatialHandlers";
 import SyncHandlers from "./handlers/SyncHandlers";
+import UIHandlers from "./handlers/UIHandlers";
 import ServerUrlSettings from "./ServerUrlSettings";
 import HttpDiagnostics from "./HttpDiagnostics";
 import { Connection, RequestPayload, PollResponse, ReadyResponse } from "../types";
@@ -178,6 +179,7 @@ const routeMap: Record<string, Handler> = {
   "/api/manage-animation": AnimationHandlers.manageAnimation,
   "/api/spatial-query": SpatialHandlers.spatialQuery,
   "/api/manage-sync": SyncHandlers.manageSync,
+  "/api/manage-ui": UIHandlers.manageUI,
 };
 
 function processRequest(request: RequestPayload): unknown {

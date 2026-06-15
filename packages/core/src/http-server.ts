@@ -108,6 +108,7 @@ export const TOOL_HANDLERS: Record<string, ToolHandler> = {
   manage_audio: (tools, body) => tools.manageAudio(body.action, body.params, body.instance_id),
   manage_animation: (tools, body) => tools.manageAnimation(body.action, body.params, body.instance_id),
   manage_sync: (tools, body) => tools.manageSync(body.action, body.params, body.instance_id),
+  manage_ui: (tools, body) => tools.manageUI(body.operation, body.parentPath, body.instancePath, body.tree, body.properties, body.format, body.quality, body.instance_id),
   simulate_mouse_input: (tools, body) => tools.simulateMouseInput(body.action, body.x, body.y, body.button, body.scrollDirection, body.target, body.instance_id),
   simulate_keyboard_input: (tools, body) => tools.simulateKeyboardInput(body.keyCode, body.action, body.duration, body.text, body.target, body.instance_id),
   character_navigation: (tools, body) => tools.characterNavigation(body.position, body.instancePath, body.waitForCompletion, body.timeout, body.target, body.instance_id),

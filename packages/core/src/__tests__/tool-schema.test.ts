@@ -174,6 +174,7 @@ describe('Tool schema compatibility', () => {
       manage_audio: 'manageAudio',
       manage_animation: 'manageAnimation',
       manage_sync: 'manageSync',
+      manage_ui: 'manageUI',
     };
     for (const tool of TOOL_DEFINITIONS) {
       if (STUDIO_AGNOSTIC_TOOLS.has(tool.name)) continue;
