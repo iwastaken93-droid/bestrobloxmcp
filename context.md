@@ -291,7 +291,28 @@ plugins/weppy-roblox-mcp/
 
 ---
 
-## 8. Last Updated
+## 8. Implementation Status
+
+**Phase 1 (Foundation) — COMPLETE** ✅
+- Forked `robloxstudio-mcp` core into `packages/core/`
+- Forked studio plugin into `studio-plugin/`
+- Set up workspace (`package.json`, `tsconfig.base.json`, build scripts)
+- Updated all package names (`@chrrxs/robloxstudio-mcp-core` → `@bestrobloxmcp/core`)
+- Unified inspector + main into single plugin with `--safe-mode` CLI flag
+- Updated all test files to reference new package names
+- Build passes: `packages/core` compiles, 96 tests pass
+- Build passes: `packages/bestrobloxmcp` bundles successfully with tsup
+
+**Phase 2 (Consolidation) — COMPLETE** ✅
+- ~~Merge inspector variant into single plugin with `safe_mode` toggle~~ (done in Phase 1)
+- ~~Remove dead code (back-compat aliases, legacy cleanup)~~ ✅ Removed `cleanupLegacyEditBridges` and `/api/mass-create-objects-with-properties` alias
+- ~~Refactor tool definitions into grouped actions + individual aliases~~ ✅ Batch support merged into `get_instance_properties`, `set_property`, `create_object`, `smart_duplicate`; `mass_*` tools removed
+- ~~Add `manage_batch` transaction support~~ ✅ Added `manage_batch` with `continueOnError` and `undo:batch` history recording
+- ~~Improve error messages with structured `ErrorCode` enum~~ ✅ Added `RoutingFailure` and `StudioToolFailure` with `BatchErrorCode`
+
+---
+
+## 9. Last Updated
 
 Date: 2026-06-15
-By: Initial planning session
+By: Initial planning session, Phase 1 completed

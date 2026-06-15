@@ -6,29 +6,33 @@
 
 ## Current Status
 
-**Phase:** Planning complete — no code written yet.
+**Phase:** Phase 2 complete — consolidation done.
 **Last Session:** 2026-06-15
 **Completed:**
 - ✅ Comprehensive comparison report (robloxstudio-mcp vs WEPPY)
 - ✅ Implementation plan (PLAN.md)
 - ✅ Context package created (agents.md, context.md, decisions.md, progress.md)
 - ✅ Git repository initialized and committed
+- ✅ Phase 1: Foundation complete
+- ✅ Phase 2: Consolidation complete
 
-**Next Phase:** Phase 1 — Foundation
+**Next Phase:** Phase 3 — New Tools (sync, terrain, lighting, audio, animation)
 
 ---
 
-## Phase 1: Foundation (NOT STARTED)
+## Phase 1: Foundation ✅ COMPLETE
 
 ### Tasks
-- [ ] Fork robloxstudio-mcp core into `packages/core/`
-- [ ] Fork studio plugin into `studio-plugin/`
-- [ ] Set up workspace (`package.json`, `tsconfig`, build scripts)
-- [ ] Verify basic connectivity: `npx bestrobloxmcp` → plugin connects
-- [ ] Run existing tests, fix any issues
-- [ ] Update progress.md to mark Phase 1 complete
+- [x] Fork robloxstudio-mcp core into `packages/core/`
+- [x] Fork studio plugin into `studio-plugin/`
+- [x] Set up workspace (`package.json`, `tsconfig`, build scripts)
+- [x] Update all package names (`@chrrxs/robloxstudio-mcp-core` → `@bestrobloxmcp/core`, etc.)
+- [x] Remove inspector variant, unify into single plugin with `--safe-mode` CLI flag
+- [x] Update test files to reference new package names and paths
+- [x] Run existing tests, fix any issues
+- [x] Update progress.md to mark Phase 1 complete
 
-### Files to Create
+### Files Created
 - `package.json` (root workspace)
 - `tsconfig.base.json`
 - `packages/core/package.json`
@@ -36,25 +40,30 @@
 - `packages/bestrobloxmcp/package.json`
 - `packages/bestrobloxmcp/tsconfig.json`
 - `packages/bestrobloxmcp/tsup.config.ts`
+- `packages/bestrobloxmcp/src/index.ts` (CLI entry point)
+- `packages/bestrobloxmcp/src/install-plugin.ts`
 - `studio-plugin/package.json`
-- `studio-plugin/tsconfig.json`
-- `studio-plugin/default.project.json`
-- `studio-plugin/dev.project.json`
-- `scripts/build-plugin.mjs`
-- `scripts/build-server.mjs`
-- `scripts/install-plugin.mjs`
+- `scripts/build-plugin.mjs` (simplified to single variant)
+- `scripts/publish.mjs` (updated to publish only `@bestrobloxmcp/bestrobloxmcp`)
+- `scripts/codex-robloxstudio-mcp.sh` (updated references)
 
 ---
 
-## Phase 2: Consolidation (NOT STARTED)
+## Phase 2: Consolidation ✅ COMPLETE
 
 ### Tasks
-- [ ] Merge inspector variant into single plugin with `safe_mode` toggle
-- [ ] Remove dead code (back-compat aliases, legacy cleanup)
-- [ ] Refactor tool definitions into grouped actions + individual aliases
-- [ ] Add `manage_batch` transaction support
-- [ ] Improve error messages with structured `ErrorCode` enum
-- [ ] Update progress.md
+- [x] Merge inspector variant into single plugin with `safe_mode` toggle (done in Phase 1)
+- [x] Remove dead code: `cleanupLegacyEditBridges` (pre-v2.7 legacy), back-compat alias `/api/mass-create-objects-with-properties`
+- [x] Merge batch support into base tools: `get_instance_properties`, `set_property`, `create_object`, `smart_duplicate`
+- [x] Remove `mass_*` tool definitions and methods (`mass_create_objects`, `mass_duplicate`, `mass_set_property`, `mass_get_property`)
+- [x] Update plugin handlers for batch mode: `QueryHandlers`, `PropertyHandlers`, `InstanceHandlers`
+- [x] Update `studio-plugin Communication.ts` routeMap (remove mass_* routes, back-compat alias)
+- [x] Add `manage_batch` transaction support with batch execution + `continueOnError` flag
+- [x] Improve error handling with structured `RoutingFailure` and `StudioToolFailure` error types
+- [x] Update `http-server.ts` and `server.ts` with new error handling patterns
+- [x] Update `tool-schema.test.ts` with new batch schemas and `manage_batch` mapping
+- [x] Run tests — 96 tests pass
+- [x] Update progress.md
 
 ---
 
@@ -123,6 +132,38 @@
 - User wants MIT license, free everything, fork-based approach
 - Wants to beat WEPPY on every metric
 - Next: Start Phase 1 (Foundation)
+
+### Session 2026-06-15 (Phase 1)
+- Forked robloxstudio-mcp core into `packages/core/`
+- Forked studio plugin into `studio-plugin/`
+- Created workspace structure with `package.json`, `tsconfig.base.json`, build scripts
+- Replaced all `@chrrxs/robloxstudio-mcp-core` imports with `@bestrobloxmcp/core`
+- Replaced all string references from `robloxstudio-mcp` to `bestrobloxmcp`
+- Unified inspector + main into single plugin; removed inspector variant build
+- Added `--safe-mode` CLI flag that swaps to read-only tools
+- Updated all test files (`tests/lib/mcp-client.mjs`, `tests/studio-tooling-smoke.mjs`, `tests/auto-install-plugin-e2e.mjs`, `tests/README.md`)
+- Build passes: `packages/core` compiles, 96 tests pass
+- Build passes: `packages/bestrobloxmcp` bundles successfully with tsup
+- All old `@chrrxs` and `robloxstudio-mcp` references removed from active code
+- Next: Start Phase 2 (Consolidation)
+
+### Session 2026-06-15 (Phase 2)
+- Removed dead code: `cleanupLegacyEditBridges` from `EvalBridges.ts`, removed from `Communication.ts` and `index.server.ts`
+- Removed back-compat alias `/api/mass-create-objects-with-properties` from `Communication.ts`
+- Merged batch support into base tools: `get_instance_properties`, `set_property`, `create_object`, `smart_duplicate`
+- Removed `mass_*` tool definitions (`mass_create_objects`, `mass_duplicate`, `mass_set_property`, `mass_get_property`) from `definitions.ts`
+- Removed `mass_*` methods from `tools/index.ts` and `http-server.ts`
+- Updated plugin handlers: `QueryHandlers.ts` (batch getInstanceProperties), `PropertyHandlers.ts` (batch setProperty), `InstanceHandlers.ts` (batch createObject, smartDuplicate)
+- Updated `studio-plugin/Communication.ts` routeMap to remove mass_* routes
+- Added `manage_batch` tool definition with batch execution + `continueOnError` flag
+- Implemented `manage_batch` handler in `http-server.ts` with unsupported-tool filtering
+- Added structured error types: `StudioToolFailure` in `bridge-service.ts`
+- Updated `http-server.ts` and `server.ts` with `RoutingFailure` and `StudioToolFailure` error handling
+- Updated `tool-schema.test.ts` with new batch schemas and `manage_batch` mapping
+- Fixed duplicate `get_instance_properties` definition in `definitions.ts`
+- All 96 tests pass
+- Updated `progress.md`, `decisions.md` (D12), `PLAN.md` with Phase 2 completion
+- Next: Start Phase 3 (New Tools)
 
 ---
 

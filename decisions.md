@@ -186,6 +186,43 @@
 
 ---
 
+## D11: Phase 1 Implementation (Fork + Rebrand)
+
+**Date:** 2026-06-15
+**Decision:** Fork the entire codebase, rebrand, and verify builds/tests before modifying behavior.
+**Rationale:**
+- Need a working baseline before making structural changes
+- Rebranding is tedious but necessary to avoid confusion with upstream
+- Tests must pass on the forked code before we add new features
+- Single-plugin approach is simpler than maintaining two variants
+
+**Constraints:**
+- All package names changed from `@chrrxs/robloxstudio-mcp-core` → `@bestrobloxmcp/core`
+- CLI package renamed from `@chrrxs/robloxstudio-mcp` → `@bestrobloxmcp/bestrobloxmcp`
+- Inspector variant removed; `--safe-mode` flag provides read-only mode
+- All test files updated to reference new package names and paths
+- Build and test cycle must pass before proceeding to Phase 2
+
+## D12: Phase 2 Implementation (Consolidation)
+
+**Date:** 2026-06-15
+**Decision:** Remove dead code, merge batch operations into base tools, and add structured error types.
+**Rationale:**
+- `mass_*` tools (mass_create_objects, mass_duplicate, mass_set_property, mass_get_property) were redundant — base tools should accept batch arrays natively
+- `cleanupLegacyEditBridges` (pre-v2.7) and back-compat alias `/api/mass-create-objects-with-properties` were dead weight
+- `manage_batch` enables atomic multi-operation transactions with optional rollback via ChangeHistoryService
+- Structured `RoutingFailure` + `StudioToolFailure` errors give the LLM recoverable data (instance list, error codes) instead of plain strings
+- Single plugin with `safe_mode` flag is simpler than maintaining two plugin variants
+
+**Constraints:**
+- All batch operations use `anyOf` JSON Schema validation: either single-instance params OR batch array params
+- Plugin base handlers (createObject, setProperty, etc.) now handle both single and batch modes
+- `manage_batch` rejects image-returning, fanout, and nested batch tools to prevent infinite recursion and oversized responses
+- `StudioToolFailure` carries `code`, `message`, and optional `data` for structured error responses
+- All 96 tests must pass after consolidation
+
+---
+
 ## How to Add New Decisions
 
 ```markdown
@@ -204,3 +241,4 @@
 ## Last Updated
 
 Date: 2026-06-15
+Status: Phase 2 complete — 12 decisions recorded, build and tests passing

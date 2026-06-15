@@ -142,13 +142,13 @@ bestrobloxmcp/
 
 ## 4. What to Remove (dead weight / unused)
 
-| Feature | Why Remove |
-|---------|-----------|
-| **Inspector variant (35 tools)** | Instead of a separate 35-tool inspector, use a **mode flag** (`safe_mode: true`) on the same tools. One plugin, one codebase, runtime toggle. |
-| **Redundant mass-operation tools** | `mass_create_objects`, `mass_duplicate`, `mass_set_property`, `mass_get_property` — merge into `create_objects`, `duplicate`, `set_property` with batch arrays. |
-| **Back-compat aliases** | `/api/mass-create-objects-with-properties` → remove, only keep `/api/mass-create-objects`. |
-| **Legacy eval bridge cleanup** | `cleanupLegacyEditBridges` from pre-v2.7 — remove after 3+ versions. |
-| **Separate `build-executor` JS sandbox** | The JS sandbox for procedural generation is cool but fragile. Replace with a **Lua-native build generator** in the plugin (more reliable, no vm2 security issues). |
+| Feature | Why Remove | Status |
+|---------|-----------|--------|
+| ~~Inspector variant (35 tools)~~ | ~~Instead of a separate 35-tool inspector, use a **mode flag** (`safe_mode: true`) on the same tools.~~ | ✅ **Done in Phase 1** — unified into single plugin with `--safe-mode` CLI flag |
+| ~~Redundant mass-operation tools~~ | ~~`mass_create_objects`, `mass_duplicate`, `mass_set_property`, `mass_get_property` — merge into `create_objects`, `duplicate`, `set_property` with batch arrays.~~ | ✅ **Done in Phase 2** — batch support merged into base tools, `mass_*` definitions removed |
+| ~~Back-compat aliases~~ | ~~`/api/mass-create-objects-with-properties` → remove, only keep `/api/mass-create-objects`.~~ | ✅ **Done in Phase 2** — alias removed from `Communication.ts` routeMap |
+| ~~Legacy eval bridge cleanup~~ | ~~`cleanupLegacyEditBridges` from pre-v2.7 — remove after 3+ versions.~~ | ✅ **Done in Phase 2** — removed from `EvalBridges.ts`, `Communication.ts`, `index.server.ts` |
+| **Separate `build-executor` JS sandbox** | The JS sandbox for procedural generation is cool but fragile. Replace with a **Lua-native build generator** in the plugin (more reliable, no vm2 security issues). | Not started |
 
 ---
 
@@ -309,19 +309,19 @@ A companion VSCode extension (`bestrobloxmcp-vscode`) that:
 
 ## 7. Implementation Phases
 
-### Phase 1: Foundation (Week 1)
-1. Fork `robloxstudio-mcp` core into `packages/core/`
-2. Fork studio plugin into `studio-plugin/`
-3. Set up workspace (`package.json`, `tsconfig`, build scripts)
-4. Verify basic connectivity: `npx bestrobloxmcp` → plugin connects
-5. Run existing tests, fix any issues
+### Phase 1: Foundation (Week 1) ✅ COMPLETE
+1. ~~Fork `robloxstudio-mcp` core into `packages/core/`~~ ✅ Done
+2. ~~Fork studio plugin into `studio-plugin/`~~ ✅ Done
+3. ~~Set up workspace (`package.json`, `tsconfig`, build scripts)~~ ✅ Done
+4. ~~Verify basic connectivity: `npx bestrobloxmcp` → plugin connects~~ ✅ Build and tests pass
+5. ~~Run existing tests, fix any issues~~ ✅ 96 tests pass
 
-### Phase 2: Consolidation (Week 2)
-1. Merge inspector variant into single plugin with `safe_mode` toggle
-2. Remove dead code (back-compat aliases, legacy cleanup)
-3. Refactor tool definitions into grouped actions + individual aliases
-4. Add `manage_batch` transaction support
-5. Improve error messages with structured `ErrorCode` enum
+### Phase 2: Consolidation (Week 2) ✅ COMPLETE
+1. ~~Merge inspector variant into single plugin with `safe_mode` toggle~~ ✅ Done in Phase 1
+2. ~~Remove dead code (back-compat aliases, legacy cleanup)~~ ✅ Done
+3. ~~Refactor tool definitions into grouped actions + individual aliases~~ ✅ Done (batch merged into base tools)
+4. ~~Add `manage_batch` transaction support~~ ✅ Done
+5. ~~Improve error messages with structured `ErrorCode` enum~~ ✅ Done
 
 ### Phase 3: New Tools (Week 3-4)
 1. `manage_sync` — bidirectional sync (filesystem ↔ Studio)
@@ -353,9 +353,9 @@ A companion VSCode extension (`bestrobloxmcp-vscode`) that:
 
 ## 9. Next Steps
 
-**Ready to implement?** The recommended starting order:
-1. **Phase 1** — Fork the core and verify it works
-2. **Phase 2** — Consolidate and clean up
+**Phase 1 is complete.** The recommended order:
+1. ✅ **Phase 1** — Fork the core and verify it works (DONE)
+2. **Phase 2** — Consolidate and clean up (NEXT)
 3. **Phase 3** — Add the big new features (sync, terrain, lighting)
 
-Tell me which phase to start with, and I'll begin building.
+Tell me which phase to start with, or if you want to jump to a specific feature.
