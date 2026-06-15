@@ -12,6 +12,7 @@
 - ✅ Comprehensive comparison report (robloxstudio-mcp vs WEPPY)
 - ✅ Implementation plan (PLAN.md)
 - ✅ Context package created (agents.md, context.md, decisions.md, progress.md)
+- ✅ Git repository initialized and committed
 
 **Next Phase:** Phase 1 — Foundation
 
@@ -105,8 +106,10 @@
 ## Project Paths
 
 - **This project:** `/home/username/projects/oopsie/bestrobloxmcp/`
-- **Reference (robloxstudio-mcp):** `/home/username/projects/oopsie/robloxstudio-mcp/`
-- **Reference (WEPPY):** `/home/username/projects/oopsie/weppy-roblox-mcp/`
+- **Reference (robloxstudio-mcp):** `references/robloxstudio-mcp/` (symlink)
+- **Reference (WEPPY):** `references/weppy-roblox-mcp/` (symlink)
+
+> The `references/` directory contains symlinks to both upstream repos for easy reading, diffing, and copying during development. You can `cd references/robloxstudio-mcp` to inspect the source code at any time.
 
 ---
 
