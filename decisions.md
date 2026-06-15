@@ -223,6 +223,29 @@
 
 ---
 
+## D13: Phase 3 Implementation (New Tools)
+
+**Date:** 2026-06-15
+**Decision:** Add 6 new tools that WEPPY paywalls: terrain, spatial queries, lighting, audio, animation, and sync.
+**Rationale:**
+- These are the core differentiators that make BestRobloxMCP competitive with WEPPY Pro
+- All implemented as free, MIT-licensed features — no paywalls, no tier checks
+- Terrain uses perlin noise via `math.noise` and native `ReadVoxels`/`WriteVoxels` APIs
+- Spatial queries use `Workspace:Raycast` with proper `RaycastParams` and `Blacklist` filtering
+- Lighting uses `Lighting` service properties and post-processing effects (`Atmosphere`, `BloomEffect`, `ColorCorrectionEffect`)
+- Audio uses `SoundService` and `Sound` instances with proper lifecycle management
+- Animation uses `Animator:LoadAnimation()` (not deprecated `Humanoid:LoadAnimation()`) and `TweenService:Create()`
+- Sync is server-side only (file system operations) — plugin returns a placeholder
+
+**Constraints:**
+- All plugin handlers use `pcall()` for Studio API calls
+- All mutation handlers use `ChangeHistoryService.TryBeginRecording`/`FinishRecording`
+- Each new tool follows the existing pattern: tool definition → server method → HTTP handler → plugin handler
+- `manage_sync` is intentionally server-side only — the plugin handler is a pass-through placeholder
+- All 96 tests pass after adding the new tools
+
+---
+
 ## How to Add New Decisions
 
 ```markdown

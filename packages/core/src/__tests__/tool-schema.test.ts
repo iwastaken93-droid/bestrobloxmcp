@@ -168,6 +168,12 @@ describe('Tool schema compatibility', () => {
       import_rbxm: 'importRbxm',
       find_and_replace_in_scripts: 'findAndReplaceInScripts',
       manage_batch: 'manageBatch',
+      manage_terrain: 'manageTerrain',
+      spatial_query: 'spatialQuery',
+      manage_lighting: 'manageLighting',
+      manage_audio: 'manageAudio',
+      manage_animation: 'manageAnimation',
+      manage_sync: 'manageSync',
     };
     for (const tool of TOOL_DEFINITIONS) {
       if (STUDIO_AGNOSTIC_TOOLS.has(tool.name)) continue;

@@ -67,16 +67,23 @@
 
 ---
 
-## Phase 3: New Tools (NOT STARTED)
+## Phase 3: New Tools ✅ COMPLETE
 
 ### Tasks
-- [ ] `manage_sync` — bidirectional sync
-- [ ] `manage_terrain` — terrain generation + editing
-- [ ] `spatial_query` — raycast, find_ground, bounds
-- [ ] `manage_lighting` — time, atmosphere, bloom, color correction
-- [ ] `manage_audio` — sound playback
-- [ ] `manage_animation` — animation + tween
-- [ ] Update progress.md
+- [x] `manage_terrain` — terrain generation (noise, fill, smooth, read, replace_material)
+- [x] `spatial_query` — raycast, find_ground, check_placement, bounds, nearest
+- [x] `manage_lighting` — set_time, set_atmosphere, set_bloom, set_color_correction, get_settings
+- [x] `manage_audio` — play_sound, stop_sound, list_sounds, set_ambience
+- [x] `manage_animation` — play (Animator), stop, list, tween
+- [x] `manage_sync` — server-side placeholder (sync is handled by the server, not the plugin)
+- [x] Update `definitions.ts` with 6 new tool schemas
+- [x] Update `tools/index.ts` with 6 new methods
+- [x] Update `http-server.ts` with 6 new handlers
+- [x] Update `Communication.ts` routeMap and imports
+- [x] Create 6 new plugin handlers: TerrainHandlers, LightingHandlers, AudioHandlers, AnimationHandlers, SpatialHandlers, SyncHandlers
+- [x] Update `tool-schema.test.ts` with new tool mappings
+- [x] All 96 tests pass, TypeScript compiles cleanly
+- [x] Update progress.md
 
 ---
 

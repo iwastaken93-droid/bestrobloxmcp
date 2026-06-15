@@ -323,13 +323,13 @@ A companion VSCode extension (`bestrobloxmcp-vscode`) that:
 4. ~~Add `manage_batch` transaction support~~ ✅ Done
 5. ~~Improve error messages with structured `ErrorCode` enum~~ ✅ Done
 
-### Phase 3: New Tools (Week 3-4)
-1. `manage_sync` — bidirectional sync (filesystem ↔ Studio)
-2. `manage_terrain` — terrain generation + editing
-3. `spatial_query` — raycast, find_ground, bounds
-4. `manage_lighting` — time, atmosphere, bloom, color correction
-5. `manage_audio` — sound playback + management
-6. `manage_animation` — animation + tween tools
+### Phase 3: New Tools (Week 3-4) ✅ COMPLETE
+1. ~~`manage_sync` — bidirectional sync (filesystem ↔ Studio)~~ ✅ Done (server-side placeholder)
+2. ~~`manage_terrain` — terrain generation + editing~~ ✅ Done (generate, fill, smooth, read, replace_material)
+3. ~~`spatial_query` — raycast, find_ground, bounds~~ ✅ Done (raycast, find_ground, check_placement, bounds, nearest)
+4. ~~`manage_lighting` — time, atmosphere, bloom, color correction~~ ✅ Done (set_time, set_atmosphere, set_bloom, set_color_correction, get_settings)
+5. ~~`manage_audio` — sound playback + management~~ ✅ Done (play_sound, stop_sound, list_sounds, set_ambience)
+6. ~~`manage_animation` — animation + tween tools~~ ✅ Done (play, stop, list, tween)
 
 ### Phase 4: UI Studio (Week 5)
 1. `manage_ui` — design_brief, create_tree, preview, design_check

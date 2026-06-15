@@ -3822,4 +3822,74 @@ export class RobloxStudioTools {
       ],
     };
   }
+
+  // --------------------------------------------------------------------------
+  // Phase 3: New Tools — Terrain, Lighting, Audio, Animation, Spatial, Sync
+  // --------------------------------------------------------------------------
+
+  // ─── manage_terrain ───
+  async manageTerrain(action: 'generate' | 'fill' | 'smooth' | 'read' | 'replace_material', options: Record<string, unknown>, instance_id?: string) {
+    const { instanceId } = this._resolveRuntime(instance_id);
+    const body = { action, options };
+    const resp = await this.client.request('/api/manage-terrain', body, instanceId, 'edit');
+    if (resp.error) {
+      return { content: [{ type: 'text', text: resp.error }] };
+    }
+    return { content: [{ type: 'text', text: JSON.stringify(resp.result, null, 2) }] };
+  }
+
+  // ─── spatial_query ───
+  async spatialQuery(queryType: 'raycast' | 'find_ground' | 'check_placement' | 'bounds' | 'nearest', params: Record<string, unknown>, instance_id?: string) {
+    const { instanceId } = this._resolveRuntime(instance_id);
+    const body = { queryType, params };
+    const resp = await this.client.request('/api/spatial-query', body, instanceId, 'edit');
+    if (resp.error) {
+      return { content: [{ type: 'text', text: resp.error }] };
+    }
+    return { content: [{ type: 'text', text: JSON.stringify(resp.result, null, 2) }] };
+  }
+
+  // ─── manage_lighting ───
+  async manageLighting(action: 'set_time' | 'set_atmosphere' | 'set_bloom' | 'set_color_correction' | 'get_settings', settings: Record<string, unknown>, instance_id?: string) {
+    const { instanceId } = this._resolveRuntime(instance_id);
+    const body = { action, settings };
+    const resp = await this.client.request('/api/manage-lighting', body, instanceId, 'edit');
+    if (resp.error) {
+      return { content: [{ type: 'text', text: resp.error }] };
+    }
+    return { content: [{ type: 'text', text: JSON.stringify(resp.result, null, 2) }] };
+  }
+
+  // ─── manage_audio ───
+  async manageAudio(action: 'play_sound' | 'stop_sound' | 'list_sounds' | 'set_ambience', params: Record<string, unknown>, instance_id?: string) {
+    const { instanceId } = this._resolveRuntime(instance_id);
+    const body = { action, params };
+    const resp = await this.client.request('/api/manage-audio', body, instanceId, 'edit');
+    if (resp.error) {
+      return { content: [{ type: 'text', text: resp.error }] };
+    }
+    return { content: [{ type: 'text', text: JSON.stringify(resp.result, null, 2) }] };
+  }
+
+  // ─── manage_animation ───
+  async manageAnimation(action: 'play' | 'stop' | 'list' | 'tween', params: Record<string, unknown>, instance_id?: string) {
+    const { instanceId } = this._resolveRuntime(instance_id);
+    const body = { action, params };
+    const resp = await this.client.request('/api/manage-animation', body, instanceId, 'edit');
+    if (resp.error) {
+      return { content: [{ type: 'text', text: resp.error }] };
+    }
+    return { content: [{ type: 'text', text: JSON.stringify(resp.result, null, 2) }] };
+  }
+
+  // ─── manage_sync ───
+  async manageSync(action: 'status' | 'pull' | 'push' | 'resolve', params: Record<string, unknown>, instance_id?: string) {
+    const { instanceId } = this._resolveRuntime(instance_id);
+    const body = { action, params };
+    const resp = await this.client.request('/api/manage-sync', body, instanceId, 'edit');
+    if (resp.error) {
+      return { content: [{ type: 'text', text: resp.error }] };
+    }
+    return { content: [{ type: 'text', text: JSON.stringify(resp.result, null, 2) }] };
+  }
 }

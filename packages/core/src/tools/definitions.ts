@@ -2345,6 +2345,322 @@ part(0,2,0,2,1,1,"b")`,
     }
   },
   {
+    name: 'manage_lighting',
+    category: 'write',
+    description: 'Manage lighting and atmosphere. Operations: set_time_of_day (0-24), set_atmosphere (density, offset, color, haze), set_bloom (intensity, size, threshold), set_color_correction (tint, contrast, saturation), reset (restores defaults).',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        operation: {
+          type: 'string',
+          enum: ['set_time_of_day', 'set_atmosphere', 'set_bloom', 'set_color_correction', 'reset'],
+          description: 'Lighting operation to perform'
+        },
+        hour: {
+          type: 'number',
+          description: 'Hour of day for set_time_of_day (0-24, e.g. 12 = noon, 18 = sunset)'
+        },
+        density: {
+          type: 'number',
+          description: 'Atmosphere density (0-1)'
+        },
+        offset: {
+          type: 'number',
+          description: 'Atmosphere offset (0-1)'
+        },
+        color: {
+          type: 'string',
+          description: 'Atmosphere color as hex string (e.g. "#87CEEB")'
+        },
+        haze: {
+          type: 'number',
+          description: 'Haze level (0-1)'
+        },
+        intensity: {
+          type: 'number',
+          description: 'Bloom intensity (0-1)'
+        },
+        size: {
+          type: 'number',
+          description: 'Bloom size (0-56)'
+        },
+        threshold: {
+          type: 'number',
+          description: 'Bloom threshold (0-1)'
+        },
+        tint: {
+          type: 'string',
+          description: 'Color correction tint as hex string (e.g. "#FFFFFF")'
+        },
+        contrast: {
+          type: 'number',
+          description: 'Color correction contrast (-2 to 2)'
+        },
+        saturation: {
+          type: 'number',
+          description: 'Color correction saturation (-2 to 2)'
+        },
+        instance_id: {
+          type: 'string',
+          description: 'Which connected Studio place to target. Required when multiple places are connected; omit when one. Use get_connected_instances to list available IDs.'
+        }
+      },
+      required: ['operation']
+    }
+  },
+  {
+    name: 'spatial_query',
+    category: 'read',
+    description: 'Spatial queries in the 3D world. Operations: raycast (from origin in direction), find_ground (raycast downward from position), check_placement (is area clear), bounds_of (get bounding box), nearest_of_class (find closest instance).',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        operation: {
+          type: 'string',
+          enum: ['raycast', 'find_ground', 'check_placement', 'bounds_of', 'nearest_of_class'],
+          description: 'Spatial query operation'
+        },
+        origin: {
+          type: 'array',
+          items: { type: 'number' },
+          description: 'Ray origin [x, y, z] for raycast'
+        },
+        direction: {
+          type: 'array',
+          items: { type: 'number' },
+          description: 'Ray direction [x, y, z] for raycast'
+        },
+        maxDistance: {
+          type: 'number',
+          description: 'Max raycast distance (default: 1000)'
+        },
+        position: {
+          type: 'array',
+          items: { type: 'number' },
+          description: 'World position [x, y, z] for find_ground, check_placement, nearest_of_class'
+        },
+        size: {
+          type: 'array',
+          items: { type: 'number' },
+          description: 'Box size [x, y, z] for check_placement'
+        },
+        instancePath: {
+          type: 'string',
+          description: 'Instance path for bounds_of'
+        },
+        className: {
+          type: 'string',
+          description: 'Class name to search for nearest_of_class'
+        },
+        maxSearchDistance: {
+          type: 'number',
+          description: 'Maximum search distance for nearest_of_class (default: 500)'
+        },
+        instance_id: {
+          type: 'string',
+          description: 'Which connected Studio place to target. Required when multiple places are connected; omit when one. Use get_connected_instances to list available IDs.'
+        }
+      },
+      required: ['operation']
+    }
+  },
+  {
+    name: 'manage_audio',
+    category: 'write',
+    description: 'Manage sound and audio. Operations: play_sound (create and play), stop_sound (stop and optionally destroy), list_sounds (list Sound instances), set_ambience (set ambient background sound).',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        operation: {
+          type: 'string',
+          enum: ['play_sound', 'stop_sound', 'list_sounds', 'set_ambience'],
+          description: 'Audio operation'
+        },
+        assetId: {
+          type: 'number',
+          description: 'Roblox asset ID for the sound'
+        },
+        parentPath: {
+          type: 'string',
+          description: 'Parent instance path for the new Sound (default: game.Workspace)'
+        },
+        volume: {
+          type: 'number',
+          description: 'Sound volume (0-1, default: 0.5)'
+        },
+        loop: {
+          type: 'boolean',
+          description: 'Loop the sound (default: false)'
+        },
+        pitch: {
+          type: 'number',
+          description: 'Playback speed (0.1-10, default: 1)'
+        },
+        name: {
+          type: 'string',
+          description: 'Name for the Sound instance (default: "Sound")'
+        },
+        instancePath: {
+          type: 'string',
+          description: 'Instance path of the Sound for stop_sound'
+        },
+        destroy: {
+          type: 'boolean',
+          description: 'Destroy the Sound instance after stopping (default: true)'
+        },
+        instance_id: {
+          type: 'string',
+          description: 'Which connected Studio place to target. Required when multiple places are connected; omit when one. Use get_connected_instances to list available IDs.'
+        }
+      },
+      required: ['operation']
+    }
+  },
+  {
+    name: 'manage_animation',
+    category: 'write',
+    description: 'Manage animations and tweens. Operations: play_animation (load and play on Humanoid/Animator), stop_animation (stop tracked animation), list_animations (list Animation instances), tween (smoothly animate a property).',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        operation: {
+          type: 'string',
+          enum: ['play_animation', 'stop_animation', 'list_animations', 'tween'],
+          description: 'Animation operation'
+        },
+        assetId: {
+          type: 'number',
+          description: 'Roblox animation asset ID for play_animation'
+        },
+        instancePath: {
+          type: 'string',
+          description: 'Instance path for stop_animation, list_animations, or tween target'
+        },
+        property: {
+          type: 'string',
+          description: 'Property name to tween (e.g. "Position", "Size", "Transparency")'
+        },
+        targetValue: {
+          description: 'Target value for tween: number, [x,y,z] for Vector3, or hex string for Color3'
+        },
+        duration: {
+          type: 'number',
+          description: 'Tween duration in seconds (default: 1)'
+        },
+        easing: {
+          type: 'string',
+          enum: ['Linear', 'In', 'Out', 'InOut', 'Quad', 'Quart', 'Quint', 'Sine', 'Back', 'Bounce', 'Elastic'],
+          description: 'Easing style (default: Quad)'
+        },
+        easingDirection: {
+          type: 'string',
+          enum: ['In', 'Out', 'InOut'],
+          description: 'Easing direction (default: Out)'
+        },
+        instance_id: {
+          type: 'string',
+          description: 'Which connected Studio place to target. Required when multiple places are connected; omit when one. Use get_connected_instances to list available IDs.'
+        }
+      },
+      required: ['operation']
+    }
+  },
+  {
+    name: 'manage_terrain',
+    category: 'write',
+    description: 'Manage terrain. Operations: fill_region (fill a box with material), smooth_region (smooth terrain in box), read_region (read voxel data), replace_material (replace one material with another), generate ( procedural terrain from noise).',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        operation: {
+          type: 'string',
+          enum: ['fill_region', 'smooth_region', 'read_region', 'replace_material', 'generate'],
+          description: 'Terrain operation'
+        },
+        region: {
+          type: 'object',
+          properties: {
+            min: { type: 'array', items: { type: 'number' }, description: 'Minimum corner [x, y, z]' },
+            max: { type: 'array', items: { type: 'number' }, description: 'Maximum corner [x, y, z]' }
+          },
+          required: ['min', 'max'],
+          description: 'Region bounds for fill, smooth, read, replace'
+        },
+        material: {
+          type: 'string',
+          description: 'Material name for fill_region or target material for replace_material (e.g. "Grass", "Rock", "Sand", "Water")'
+        },
+        oldMaterial: {
+          type: 'string',
+          description: 'Material to replace for replace_material'
+        },
+        newMaterial: {
+          type: 'string',
+          description: 'Replacement material for replace_material'
+        },
+        seed: {
+          type: 'number',
+          description: 'Seed for generate (default: 42)'
+        },
+        amplitude: {
+          type: 'number',
+          description: 'Height amplitude for generate (default: 50)'
+        },
+        frequency: {
+          type: 'number',
+          description: 'Noise frequency for generate (default: 0.05)'
+        },
+        baseHeight: {
+          type: 'number',
+          description: 'Base terrain height for generate (default: 0)'
+        },
+        waterLevel: {
+          type: 'number',
+          description: 'Water level for generate (default: -10)'
+        },
+        instance_id: {
+          type: 'string',
+          description: 'Which connected Studio place to target. Required when multiple places are connected; omit when one. Use get_connected_instances to list available IDs.'
+        }
+      },
+      required: ['operation']
+    }
+  },
+  {
+    name: 'manage_sync',
+    category: 'write',
+    description: 'Bidirectional Studio ↔ Local file sync. Operations: status (show sync state), pull (Studio → Local), push (Local → Studio), bidirectional (auto-sync both ways), resolve (resolve conflicts), history (show recent ops). This is a server-side tool; no Studio API calls needed.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        operation: {
+          type: 'string',
+          enum: ['status', 'pull', 'push', 'bidirectional', 'resolve', 'history'],
+          description: 'Sync operation'
+        },
+        localPath: {
+          type: 'string',
+          description: 'Local filesystem path to sync with (default: ./weppy-project-sync or place_<id> folder)'
+        },
+        direction: {
+          type: 'string',
+          enum: ['forward', 'reverse', 'bidirectional'],
+          description: 'Sync direction: forward = Studio→Local, reverse = Local→Studio, bidirectional = both'
+        },
+        conflictStrategy: {
+          type: 'string',
+          enum: ['lastModified', 'studioWins', 'localWins', 'manual'],
+          description: 'Conflict resolution strategy (default: lastModified)'
+        },
+        instance_id: {
+          type: 'string',
+          description: 'Which connected Studio place to target. Required when multiple places are connected; omit when one. Use get_connected_instances to list available IDs.'
+        }
+      },
+      required: ['operation']
+    }
+  },
+  {
     name: 'manage_batch',
     category: 'write',
     description: 'Execute multiple tool operations in a single batch. Operations run sequentially. If continueOnError is false (default), the batch stops at the first failure and all prior operations are undone via ChangeHistoryService. If true, failures are recorded per-operation and execution continues. Only write tools and safe read tools are supported; tools that return images or require fanout are rejected.',

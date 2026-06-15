@@ -18,6 +18,12 @@ import SerializationHandlers from "./handlers/SerializationHandlers";
 import MemoryHandlers from "./handlers/MemoryHandlers";
 import SceneAnalysisHandlers from "./handlers/SceneAnalysisHandlers";
 import EvalRuntimeHandlers from "./handlers/EvalRuntimeHandlers";
+import TerrainHandlers from "./handlers/TerrainHandlers";
+import LightingHandlers from "./handlers/LightingHandlers";
+import AudioHandlers from "./handlers/AudioHandlers";
+import AnimationHandlers from "./handlers/AnimationHandlers";
+import SpatialHandlers from "./handlers/SpatialHandlers";
+import SyncHandlers from "./handlers/SyncHandlers";
 import ServerUrlSettings from "./ServerUrlSettings";
 import HttpDiagnostics from "./HttpDiagnostics";
 import { Connection, RequestPayload, PollResponse, ReadyResponse } from "../types";
@@ -164,8 +170,14 @@ const routeMap: Record<string, Handler> = {
 	"/api/export-rbxm": SerializationHandlers.exportRbxm,
 	"/api/import-rbxm": SerializationHandlers.importRbxm,
 
-	"/api/get-memory-breakdown": MemoryHandlers.getMemoryBreakdown,
-	"/api/get-scene-analysis": SceneAnalysisHandlers.getSceneAnalysis,
+	"/api/get-memory-breakdown": MemoryHandlers.getMemoryBreakdown,  "/api/get-scene-analysis": SceneAnalysisHandlers.getSceneAnalysis,
+
+  "/api/manage-terrain": TerrainHandlers.manageTerrain,
+  "/api/manage-lighting": LightingHandlers.manageLighting,
+  "/api/manage-audio": AudioHandlers.manageAudio,
+  "/api/manage-animation": AnimationHandlers.manageAnimation,
+  "/api/spatial-query": SpatialHandlers.spatialQuery,
+  "/api/manage-sync": SyncHandlers.manageSync,
 };
 
 function processRequest(request: RequestPayload): unknown {

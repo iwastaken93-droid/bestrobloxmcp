@@ -310,6 +310,16 @@ plugins/weppy-roblox-mcp/
 - ~~Add `manage_batch` transaction support~~ ✅ Added `manage_batch` with `continueOnError` and `undo:batch` history recording
 - ~~Improve error messages with structured `ErrorCode` enum~~ ✅ Added `RoutingFailure` and `StudioToolFailure` with `BatchErrorCode`
 
+**Phase 3 (New Tools) — COMPLETE** ✅
+- `manage_terrain` — Terrain generation using perlin noise (`math.noise`), fill, smooth, read, replace_material. Uses `ReadVoxels`/`WriteVoxels`/`FillRegion`/`ReplaceMaterial`.
+- `spatial_query` — Raycast (`Workspace:Raycast` with `RaycastParams`), find_ground, check_placement (`FindPartsInRegion3`/`GetPartBoundsInBox`), bounds (`GetBoundingBox`), nearest (recursive search).
+- `manage_lighting` — `set_time` (TimeOfDay), `set_atmosphere` (Density/Color/Glare/Haze), `set_bloom` (Intensity/Size/Threshold), `set_color_correction` (Brightness/Contrast/Saturation/Tint), `get_settings` (full Lighting + post-processing state).
+- `manage_audio` — `play_sound` (Sound instance creation), `stop_sound` (by path or soundId), `list_sounds` (recursive search), `set_ambience` (workspace-level looping sound).
+- `manage_animation` — `play` (Animator:LoadAnimation), `stop` (GetPlayingAnimationTracks), `list` (recursive Animation search), `tween` (TweenService:Create with Vector3/Color3 conversion).
+- `manage_sync` — Server-side placeholder (file system operations are server-side, not plugin-side).
+- All new plugin handlers use `pcall()` and `ChangeHistoryService` recording.
+- All 96 tests pass, TypeScript compiles cleanly.
+
 ---
 
 ## 9. Last Updated
