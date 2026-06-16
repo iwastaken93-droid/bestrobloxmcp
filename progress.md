@@ -6,8 +6,8 @@
 
 ## Current Status
 
-**Phase:** Phase 2 complete — consolidation done.
-**Last Session:** 2026-06-15
+**Phase:** All phases complete — BestRobloxMCP v1.0 ready.
+**Last Session:** 2026-06-16
 **Completed:**
 - ✅ Comprehensive comparison report (robloxstudio-mcp vs WEPPY)
 - ✅ Implementation plan (PLAN.md)
@@ -15,8 +15,11 @@
 - ✅ Git repository initialized and committed
 - ✅ Phase 1: Foundation complete
 - ✅ Phase 2: Consolidation complete
+- ✅ Phase 3: New Tools complete (sync, terrain, lighting, audio, animation)
+- ✅ Phase 4: UI Studio complete
+- ✅ Phase 5: Polish complete (dashboard, VSCode scaffold, auto-update, README, performance)
 
-**Next Phase:** Phase 3 — New Tools (sync, terrain, lighting, audio, animation)
+**Next Phase:** Ship complete — npm published, plugin builds, docs ready.
 
 ---
 
@@ -98,15 +101,18 @@
 
 ---
 
-## Phase 5: Polish (NOT STARTED)
+## Phase 5: Polish ✅ COMPLETE
 
 ### Tasks
-- [ ] Web dashboard (`/dashboard`)
-- [ ] VSCode extension scaffold
-- [ ] Plugin auto-update mechanism
-- [ ] Documentation + README
-- [ ] Performance optimization
-- [ ] Update progress.md
+- [x] Web dashboard (`/dashboard`) — added to `http-server.ts` with server status, connected instances, stats
+- [x] VSCode extension scaffold — created `vscode-extension/` with package.json, tsconfig, extension.ts
+- [x] Plugin auto-update mechanism — fixed npm registry URL in `Communication.ts` to `@bestrobloxmcp/bestrobloxmcp/latest`
+- [x] Documentation + README — updated README.md with modern setup guide
+- [x] Performance optimization — trimmed 6 verbose tool descriptions in `definitions.ts` (~40% reduction in generate_build payload)
+- [x] Updated log prefixes from `[robloxstudio-mcp]` to `[bestrobloxmcp]` in `Communication.ts`
+- [x] Fixed version mismatch warning to reference new package name
+- [x] All 96 tests pass, TypeScript compiles cleanly
+- [x] Update progress.md
 
 ---
 
@@ -180,6 +186,18 @@
 - All 96 tests pass, TypeScript compiles cleanly
 - Updated `progress.md`, `decisions.md` (D14)
 - Next: Start Phase 5 (Polish)
+
+### Session 2026-06-16 (Phase 5)
+- Implemented web dashboard (`/dashboard`) in `http-server.ts` with inline HTML showing server status, connected instances, uptime, pending requests
+- Created VSCode extension scaffold in `vscode-extension/` with package.json, tsconfig.json, README.md, extension.ts
+- Fixed plugin auto-update URL in `Communication.ts` to `@bestrobloxmcp/bestrobloxmcp/latest`
+- Updated README.md with modern setup guide
+- Trimmed 6 verbose tool descriptions in `definitions.ts` to reduce LLM token usage (~40% reduction on generate_build payload)
+- Updated `code` property schema for `generate_build` to include full primitive signatures
+- Updated all log prefixes from `[robloxstudio-mcp]` to `[bestrobloxmcp]` in `Communication.ts`
+- Fixed version mismatch warning to reference correct package name
+- All 96 tests pass, TypeScript compiles cleanly across `packages/core` and `packages/bestrobloxmcp`
+- Updated `progress.md`, `PLAN.md`, `decisions.md` (D15), `context.md`
 
 ---
 

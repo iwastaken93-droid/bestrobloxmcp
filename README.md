@@ -27,34 +27,66 @@ BestRobloxMCP is a Model Context Protocol (MCP) server for Roblox Studio that le
 
 ## Features
 
-- **Runtime debugging** — Execute Luau in edit/server/client contexts
-- **Game-VM eval** — Share `require` cache with your game scripts
-- **Playtest automation** — Start/stop playtests, capture logs, multiplayer
-- **Network simulation** — Test lag, jitter, packet loss on clients
-- **Device simulator** — Capture screenshots across multiple device presets
-- **Script editing** — Edit, insert, delete, find/replace across all scripts
-- **Asset management** — Search Creator Store, insert, preview, upload
-- **Build library** — Procedural generation with Lua-native primitives
-- **Terrain tools** — Generate, fill, smooth, read terrain
-- **UI Studio** — Natural-language UI generation + design audit
-- **Lighting & atmosphere** — Time of day, bloom, color correction
-- **Audio & animation** — Sound playback, animation, tweening
-- **Bidirectional sync** — Keep Studio ↔ Local files in sync
-- **Scene analysis** — Memory, triangles, unparented instances
-- **Screenshot capture** — Native resolution viewport screenshots
-- **Input simulation** — Mouse, keyboard, character navigation
-- **Web dashboard** — Monitor connected instances and tool calls
-- **VSCode extension** — IDE integration with live tree view
+- 🐛 **Runtime debugging** — Execute Luau in edit/server/client contexts
+- 🎮 **Game-VM eval** — Share `require` cache with your game scripts
+- ▶️ **Playtest automation** — Start/stop playtests, capture logs, multiplayer
+- 🌐 **Network simulation** — Test lag, jitter, packet loss on clients
+- 📱 **Device simulator** — Capture screenshots across multiple device presets
+- ✏️ **Script editing** — Edit, insert, delete, find/replace across all scripts
+- 🎨 **Asset management** — Search Creator Store, insert, preview, upload
+- 🧱 **Build library** — Procedural generation with Lua-native primitives
+- 🏔️ **Terrain tools** — Generate, fill, smooth, read terrain
+- 🖥️ **UI Studio** — Natural-language UI generation + design audit
+- 💡 **Lighting & atmosphere** — Time of day, bloom, color correction
+- 🔊 **Audio & animation** — Sound playback, animation, tweening
+- 🔄 **Bidirectional sync** — Keep Studio ↔ Local files in sync
+- 🔍 **Scene analysis** — Memory, triangles, unparented instances
+- 📸 **Screenshot capture** — Native resolution viewport screenshots
+- 🖱️ **Input simulation** — Mouse, keyboard, character navigation
+- 📊 **Web dashboard** — Monitor connected instances and tool calls
+- 🧩 **VSCode extension** — IDE integration with live tree view
 
-## Setup
+## Quick Start
 
 ```bash
-# Install globally
+# 1. Install the MCP server
 npm install -g @bestrobloxmcp/bestrobloxmcp
 
-# Or use npx
+# 2. Start the server (auto-installs the Studio plugin)
 npx -y @bestrobloxmcp/bestrobloxmcp@latest --auto-install-plugin
+
+# 3. Open Roblox Studio — the plugin connects automatically
 ```
+
+📖 **New to BestRobloxMCP?** Read the [Getting Started Guide](GETTING_STARTED.md) for a complete beginner walkthrough with examples, workflows, and troubleshooting.
+
+## Configuration
+
+| Environment Variable | Purpose |
+|---|---|
+| `ROBLOX_OPEN_CLOUD_API_KEY` | Creator Store search + asset upload |
+| `ROBLOX_CREATOR_USER_ID` | Default creator for uploads |
+| `ROBLOX_CREATOR_GROUP_ID` | Default group for uploads |
+| `ROBLOX_STUDIO_PORT` | HTTP port (default: 58741) |
+| `MCP_PLUGINS_DIR` | Custom Studio plugin install path |
+
+## CLI Flags
+
+| Flag | Description |
+|---|---|
+| `--auto-install-plugin` | Download and install the Studio plugin on startup |
+| `--install-plugin` | Install plugin and exit |
+| `--safe-mode` | Run in read-only mode (no mutations) |
+| `--open-cloud-key <key>` | Set Open Cloud API key |
+| `--creator-id <id>` | Set creator user ID |
+| `--creator-group-id <id>` | Set creator group ID |
+
+## Web Dashboard
+
+When the server is running, open `http://localhost:58741/dashboard` in your browser to see:
+- Connected Studio instances (live status)
+- Server uptime and health
+- Plugin version mismatch warnings
 
 ## Documentation
 

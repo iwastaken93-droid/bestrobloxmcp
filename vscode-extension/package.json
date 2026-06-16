@@ -1,0 +1,53 @@
+{
+  "name": "bestrobloxmcp-vscode",
+  "displayName": "BestRobloxMCP",
+  "description": "Companion extension for BestRobloxMCP — live Studio tree, sync, and script editing",
+  "version": "0.1.0",
+  "license": "MIT",
+  "publisher": "bestrobloxmcp",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "bestrobloxmcp.refreshTree",
+        "title": "Refresh Studio Tree",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "bestrobloxmcp.syncPull",
+        "title": "Sync Pull (Studio → Local)"
+      },
+      {
+        "command": "bestrobloxmcp.syncPush",
+        "title": "Sync Push (Local → Studio)"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "bestrobloxmcp-studioTree",
+          "name": "Studio Instances",
+          "when": "bestrobloxmcp.enabled"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.3.0"
+  }
+}

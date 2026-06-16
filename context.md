@@ -320,9 +320,27 @@ plugins/weppy-roblox-mcp/
 - All new plugin handlers use `pcall()` and `ChangeHistoryService` recording.
 - All 96 tests pass, TypeScript compiles cleanly.
 
+**Phase 4 (UI Studio) — COMPLETE** ✅
+- `manage_ui` — `create_tree` (build UI hierarchy from JSON spec), `update` (modify properties), `delete` (remove UI elements), `list` (enumerate UI elements under parent), `get_tree` (full structured tree + properties), `preview` (structured tree + dimensions), `check` (validate hierarchy and report issues).
+- `UIHandlers.ts` — New plugin handler with `createUINode`, `setProperties`, `getUIProperties` (using `typeIs` for Luau types), `resolveInstance`.
+- `UI_CLASSES` is a `Set` for O(1) membership checks.
+- `getUIProperties` correctly handles Vector2, UDim, UDim2, Color3, NumberRange via `typeIs` instead of `typeof === "object"`.
+- `preview` is a structured preview (tree + dimensions); actual screenshots use `capture_screenshot`.
+- All 96 tests pass, TypeScript compiles cleanly.
+
+**Phase 5 (Polish) — COMPLETE** ✅
+- Web dashboard (`/dashboard`) — Inline HTML dashboard in `http-server.ts` showing server status, connected instances, uptime, and pending requests.
+- VSCode extension scaffold — `vscode-extension/` with package.json, tsconfig.json, README.md, and `extension.ts` with placeholder commands.
+- Plugin auto-update — `checkForUpdates` in `Communication.ts` now queries `registry.npmjs.org/@bestrobloxmcp/bestrobloxmcp/latest`.
+- README.md — Updated with modern setup guide for the rebranded package.
+- Performance optimization — Trimmed 6 verbose tool descriptions (`generate_build`, `set_network_profile`, `get_runtime_logs`, `capture_screenshot`, `get_memory_breakdown`, `get_scene_analysis`) to reduce LLM token usage. `generate_build` preserves primitive signatures in the `code` property schema.
+- Log prefix consistency — Updated all `[robloxstudio-mcp]` prefixes to `[bestrobloxmcp]` in `Communication.ts`.
+- Version mismatch warning — Now references `@bestrobloxmcp/bestrobloxmcp@latest` instead of the old `@chrrxs` package.
+- All 96 tests pass, TypeScript compiles cleanly.
+
 ---
 
 ## 9. Last Updated
 
-Date: 2026-06-15
-By: Initial planning session, Phase 1 completed
+Date: 2026-06-16
+By: All phases complete — UI Studio, Terrain, Lighting, Audio, Animation, Sync, Dashboard, VSCode scaffold, Auto-update, README

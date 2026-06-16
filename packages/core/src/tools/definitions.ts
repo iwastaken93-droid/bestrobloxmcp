@@ -987,7 +987,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   {
     name: 'set_network_profile',
     category: 'write',
-    description: 'Apply simulated network conditions to active playtest client peers via NetworkSettings in plugin context. Requires a running playtest and targets only client peers: pass target="client-1", "client-2", etc., or target="all-clients". Presets: great = 30ms total latency (15ms in / 15ms out), 0ms jitter, 0% packet loss; good = 100ms total latency (50ms in / 50ms out), 10ms jitter, 0% packet loss; poor = 300ms (150ms in / 150ms out), 100ms jitter, 0.5% packet loss. profile="custom" applies only the numeric overrides provided; packet loss values above Roblox\'s 0.5% engine limit are rejected.',
+    description: 'Apply simulated network conditions to active playtest client peers via NetworkSettings. Requires a running playtest. Presets: great (30ms), good (100ms), poor (300ms). Use custom with numeric overrides. Packet loss capped at 0.5% (Roblox engine limit).',
     inputSchema: {
       type: 'object',
       properties: {
@@ -1367,7 +1367,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   {
     name: 'get_runtime_logs',
     category: 'read',
-    description: 'Read the in-memory log buffers captured by Studio plugin peers. Each buffer captures ~64 KB of recent LogService.MessageOut entries; oldest entries drop when over budget. Entries include capturedBy for the plugin buffer that observed the log. In ordinary Studio play/run sessions, LogService reflects logs across edit/server/client, so script-origin peer is not reliable and entries omit peer. In StudioTestService multiplayer sessions only, peer attribution is reliable and entries also include peer. target=all (default) merges buffers and dedups same-message-and-level entries captured within 2s across different buffers.',
+    description: 'Read in-memory log buffers from Studio plugin peers. target=all merges buffers and deduplicates entries. Peer attribution is reliable only in StudioTestService multiplayer sessions.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -1523,46 +1523,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   {
     name: 'generate_build',
     category: 'write',
-    description: `Procedurally generate a build via JS code. ALWAYS generate the entire scene in ONE call - never split into multiple small builds. PREFER high-level primitives over manual loops. No comments. No unnecessary variables. Maximize build detail per line.
-
-EDITING: When modifying an existing build, call get_build first to retrieve the original code. Then make ONLY the targeted changes the user requested - do not rewrite unchanged code. Pass the modified code to generate_build.
-
-HIGH-LEVEL (use these first - each replaces 5-20 lines):
-  room(x,y,z, w,h,d, wallKey, floorKey?, ceilKey?, wallThickness?) - Complete enclosed room (floor+ceiling+4 walls)
-  roof(x,y,z, w,d, style, key, overhang?) - style: "flat"|"gable"|"hip"
-  stairs(x1,y1,z1, x2,y2,z2, width, key) - Auto-generates steps between two points
-  column(x,y,z, height, radius, key, capKey?) - Cylinder with base+capital
-  pew(x,y,z, w,d, seatKey, legKey?) - Bench with seat+backrest+legs
-  arch(x,y,z, w,h, thickness, key, segments?) - Curved archway
-  fence(x1,z1, x2,z2, y, key, postSpacing?) - Fence with posts+rails
-
-BASIC:
-  part(x,y,z, sx,sy,sz, key, shape?, transparency?)
-  rpart(x,y,z, sx,sy,sz, rx,ry,rz, key, shape?, transparency?)
-  wall(x1,z1, x2,z2, height, thickness, key) - vertical plane from (x1,z1) to (x2,z2)
-  floor(x1,z1, x2,z2, y, thickness, key) - horizontal plane at height y, corners (x1,z1)-(x2,z2). NOT fill - only takes 2D corners+y, not 3D points
-  fill(x1,y1,z1, x2,y2,z2, key, [ux,uy,uz]?) - 3D volume between two 3D points
-  beam(x1,y1,z1, x2,y2,z2, thickness, key)
-
-IMPORTANT: Palette keys must match exactly. Use only keys defined in your palette object, not color names.
-CUSTOM MATERIALS: Use search_materials to find MaterialVariant names, then reference them as the 3rd palette element: {"a": ["Color", "BaseMaterial", "VariantName"]}.
-
-REPETITION:
-  row(x,y,z, count, spacingX, spacingZ, fn(i,cx,cy,cz))
-  grid(x,y,z, countX, countZ, spacingX, spacingZ, fn(ix,iz,cx,cy,cz))
-
-Shapes: Block(default), Wedge, Cylinder, Ball, CornerWedge. Max 10000 parts. Math and rng() available.
-CYLINDER AXIS: Roblox cylinders extend along the X axis. For upright cylinders, use size (height, diameter, diameter) with rz=90. The column() primitive handles this automatically.
-
-EXAMPLE - compact cabin (17 lines):
-room(0,0,0,8,4,6,"a","b","a")
-roof(0,4,0,8,6,"gable","c")
-wall(-4,0,-2,4,0,-2,4,1,"a")
-part(0,2,3,3,3,0.3,"a","Block",0.4)
-row(-2,0,-1,3,0,2,(i,cx,cy,cz)=>{pew(cx,0,cz,3,2,"d")})
-column(-3,0,-2,4,0.5,"a","b")
-column(3,0,-2,4,0.5,"a","b")
-part(0,2,0,2,1,1,"b")`,
+    description: 'Procedurally generate a build via JS code. Use high-level primitives (room, roof, stairs, column, pew, arch, fence) over manual loops. Basic: part, rpart, wall, floor, fill, beam. Repetition: row, grid. Palette keys must match exactly. Shapes: Block, Wedge, Cylinder, Ball, CornerWedge. Max 10000 parts. rng() available. For editing, call get_build first, modify only what changed, then pass the code here.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -1581,7 +1542,7 @@ part(0,2,0,2,1,1,"b")`,
         },
         code: {
           type: 'string',
-          description: 'JavaScript code using the primitives above to generate parts procedurally'
+          description: 'JavaScript code using primitives: room(x,y,z,w,h,d,wallKey), roof(x,y,z,w,d,style,key), stairs(x1,y1,z1,x2,y2,z2,w,key), column(x,y,z,h,r,key), pew(x,y,z,w,d,key), arch(x,y,z,w,h,t,key), fence(x1,z1,x2,z2,y,key), part(x,y,z,sx,sy,sz,key), rpart(x,y,z,sx,sy,sz,rx,ry,rz,key), wall(x1,z1,x2,z2,h,t,key), floor(x1,z1,x2,z2,y,t,key), fill(x1,y1,z1,x2,y2,z2,key), beam(x1,y1,z1,x2,y2,z2,t,key), row(x,y,z,c,sx,sz,fn), grid(x,y,z,cx,cz,sx,sz,fn), rng(). Shapes: Block, Wedge, Cylinder, Ball, CornerWedge. Max 10000 parts.'
         },
         seed: {
           type: 'number',
@@ -1912,7 +1873,7 @@ part(0,2,0,2,1,1,"b")`,
   {
     name: 'capture_screenshot',
     category: 'read',
-    description: 'Capture the Roblox Studio viewport at native resolution and return it as an image, plus a text line stating the exact pixel dimensions. Works in Edit mode and regular playtests (auto-detects a running client and captures the live play viewport). StudioTestService multiplayer client screenshots are currently blocked by Roblox temporary-texture process scoping; the tool returns a clear error in that case. The returned image is never downscaled, so its pixel grid is exactly the coordinate space simulate_mouse_input uses — read click positions straight off this image. For reading fine text/UI, use format="png" (lossless) or a higher quality; enlarging the Studio window raises resolution. Requires EditableImage API enabled (Game Settings > Security > "Allow Mesh / Image APIs") and the window to be visible.',
+    description: 'Capture the Roblox Studio viewport at native resolution and return it as an image. Works in Edit mode and regular playtests. Use png for fine text/UI. Requires EditableImage API enabled (Game Settings > Security > "Allow Mesh / Image APIs") and the window to be visible.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -2172,7 +2133,7 @@ part(0,2,0,2,1,1,"b")`,
   {
     name: 'get_memory_breakdown',
     category: 'read',
-    description: 'Read per-category memory usage by iterating Enum.DeveloperMemoryTag and calling Stats:GetMemoryUsageMbForTag per item (workaround for Stats:GetMemoryUsageMbAllCategories being gated by Capabilities: InternalTest and not callable from plugin context), plus Stats:GetTotalMemoryUsageMb for the rollup. target="all" (default) returns { peer: { total_mb, categories, timestamp } } for every connected peer except edit-proxy; single-peer targets return that peer\'s object directly. Optional tags whitelist filters to only those DeveloperMemoryTag entries; unknown tags come back with value 0 and are listed in unknown_tags so cross-version drift doesn\'t error. timestamp is Unix milliseconds (DateTime.now().UnixTimestampMillis). Per-peer MemoryTrackingEnabled=false surfaces as { error } on that peer only.',
+    description: 'Read per-category memory usage by DeveloperMemoryTag. target=all returns all connected peers. Optional tags whitelist filters to specific categories. Unknown tags return 0 with an unknown_tags list.',
     inputSchema: {
       type: 'object',
       properties: {
@@ -2195,7 +2156,7 @@ part(0,2,0,2,1,1,"b")`,
   {
     name: 'get_scene_analysis',
     category: 'read',
-    description: 'Read Roblox SceneAnalysisService data for attribution-focused performance analysis. Complements get_memory_breakdown: returns compact top-N entries for instance composition, script memory, unparented instances, triangle composition, animation memory, and audio memory. Requires the Studio Scene Analysis beta feature; if disabled, returns scene_analysis_not_enabled with betaFeatureRequired=true. target="all" (default) returns per-peer data; single-peer targets return that peer directly. raw=true includes the full nested Scene Analysis tree.',
+    description: 'Read Roblox SceneAnalysisService data for performance analysis. Returns compact top-N entries. Requires the Studio Scene Analysis beta feature. target=all returns per-peer data. raw=true includes the full tree.',
     inputSchema: {
       type: 'object',
       properties: {

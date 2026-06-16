@@ -109,9 +109,9 @@ function manageTerrain(requestData: Record<string, unknown>) {
 			const resolution = 4;
 			for (let i = 0; i < iterations; i++) {
 				const [materials, occupancies] = Terrain.ReadVoxels(region3, resolution);
-				const sizeX = materials.size()[0];
-				const sizeY = materials.size()[1];
-				const sizeZ = materials.size()[2];
+				const sizeX = materials.Size.X;
+				const sizeY = materials.Size.Y;
+				const sizeZ = materials.Size.Z;
 
 				for (let x = 1; x < sizeX - 1; x++) {
 					for (let y = 1; y < sizeY - 1; y++) {

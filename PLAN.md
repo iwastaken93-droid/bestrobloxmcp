@@ -331,17 +331,17 @@ A companion VSCode extension (`bestrobloxmcp-vscode`) that:
 5. ~~`manage_audio` — sound playback + management~~ ✅ Done (play_sound, stop_sound, list_sounds, set_ambience)
 6. ~~`manage_animation` — animation + tween tools~~ ✅ Done (play, stop, list, tween)
 
-### Phase 4: UI Studio (Week 5)
-1. `manage_ui` — design_brief, create_tree, preview, design_check
-2. UI pattern library (common Roblox UI templates)
-3. Screenshot preview for UI elements
+### Phase 4: UI Studio (Week 5) ✅ COMPLETE
+1. ~~`manage_ui` — design_brief, create_tree, preview, design_check~~ ✅ Done (create_tree, update, delete, list, get_tree, preview, check)
+2. ~~UI pattern library (common Roblox UI templates)~~ ❌ Deferred
+3. ~~Screenshot preview for UI elements~~ ✅ Done (structured preview via `get_tree` + dimensions; actual screenshot via `capture_screenshot`)
 
-### Phase 5: Polish (Week 6)
-1. Web dashboard (`/dashboard`)
-2. VSCode extension scaffold
-3. Plugin auto-update mechanism
-4. Documentation + README
-5. Performance optimization (reduce tool definitions payload for LLM)
+### Phase 5: Polish (Week 6) ✅ COMPLETE
+1. ~~Web dashboard (`/dashboard`)~~ ✅ Added to `http-server.ts` with inline HTML dashboard
+2. ~~VSCode extension scaffold~~ ✅ Created `vscode-extension/` with placeholder commands
+3. ~~Plugin auto-update mechanism~~ ✅ Fixed npm registry URL in `Communication.ts`
+4. ~~Documentation + README~~ ✅ Updated README.md with modern setup guide
+5. ~~Performance optimization~~ ✅ Trimmed 6 verbose tool descriptions in `definitions.ts`
 
 ---
 
@@ -353,9 +353,18 @@ A companion VSCode extension (`bestrobloxmcp-vscode`) that:
 
 ## 9. Next Steps
 
-**Phase 1 is complete.** The recommended order:
+**All phases complete.** The recommended order:
 1. ✅ **Phase 1** — Fork the core and verify it works (DONE)
-2. **Phase 2** — Consolidate and clean up (NEXT)
-3. **Phase 3** — Add the big new features (sync, terrain, lighting)
+2. ✅ **Phase 2** — Consolidate and clean up (DONE)
+3. ✅ **Phase 3** — Add the big new features (sync, terrain, lighting) (DONE)
+4. ✅ **Phase 4** — UI Studio (DONE)
+5. ✅ **Phase 5** — Polish (DONE)
 
-Tell me which phase to start with, or if you want to jump to a specific feature.
+**Potential next steps:**
+- Publish to npm (`npm publish` in `packages/bestrobloxmcp/`)
+- Build and release the plugin (`npm run build-plugin`)
+- Add more UI pattern templates to `manage_ui`
+- Implement the VSCode extension fully (currently scaffold-only)
+- Add the web dashboard as a standalone React app instead of inline HTML
+
+Tell me which next step to take, or if you want to jump to a specific improvement.

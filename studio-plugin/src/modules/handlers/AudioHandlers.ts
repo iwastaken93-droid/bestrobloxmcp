@@ -106,7 +106,7 @@ function manageAudio(requestData: Record<string, unknown>) {
 							looped: s.Looped,
 							playing: s.IsPlaying,
 							playbackSpeed: s.PlaybackSpeed,
-							parent: s.Parent ? getInstanceByPath(s.Parent) : undefined,
+							parent: s.Parent ? getInstancePath(s.Parent as Instance) : undefined,
 						});
 					}
 					listRecursive(child);

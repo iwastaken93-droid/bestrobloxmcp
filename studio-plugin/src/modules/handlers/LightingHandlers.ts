@@ -133,7 +133,7 @@ function manageLighting(requestData: Record<string, unknown>) {
 					colorShiftTop: [Lighting.ColorShift_Top.R, Lighting.ColorShift_Top.G, Lighting.ColorShift_Top.B],
 					outdoorAmbient: [Lighting.OutdoorAmbient.R, Lighting.OutdoorAmbient.G, Lighting.OutdoorAmbient.B],
 					shadowSoftness: Lighting.ShadowSoftness,
-					technology: tostring(Lighting.Technology),
+					technology: tostring((Lighting as unknown as { Technology: unknown }).Technology),
 					timeOfDay: Lighting.TimeOfDay,
 					geographicLatitude: Lighting.GeographicLatitude,
 					exposureCompensation: Lighting.ExposureCompensation,

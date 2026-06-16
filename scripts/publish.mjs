@@ -54,6 +54,6 @@ console.log('\nBuilding all packages...');
 run('npm run build:all');
 
 console.log('\nPublishing bestrobloxmcp...');
-run('npm publish -w packages/bestrobloxmcp');
+run('npm publish -w packages/bestrobloxmcp --access public');
 
 console.log('\nAll packages published successfully!');

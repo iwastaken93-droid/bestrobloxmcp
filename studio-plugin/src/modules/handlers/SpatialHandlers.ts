@@ -22,7 +22,7 @@ function spatialQuery(requestData: Record<string, unknown>) {
 			}
 
 			const rayOrigin = new Vector3(origin[0], origin[1], origin[2]);
-			const rayDirection = new Vector3(direction[0], direction[1], direction[2]).Unit * maxDistance;
+			const rayDirection = (new Vector3(direction[1], direction[1], direction[2])).Unit.mul(maxDistance);
 
 			const ignoreInstances: Instance[] = [];
 			if (ignoreList) {
@@ -36,7 +36,7 @@ function spatialQuery(requestData: Record<string, unknown>) {
 			raycastParams.FilterType = Enum.RaycastFilterType.Blacklist;
 			raycastParams.FilterDescendantsInstances = ignoreInstances;
 
-			const result = game.Workspace.Raycast(rayOrigin, rayDirection, raycastParams);
+			const result = game.Workspace.Raycast(rayOrigin, rayDirection as unknown as Vector3, raycastParams);
 
 			if (result) {
 				return {
@@ -76,7 +76,7 @@ function spatialQuery(requestData: Record<string, unknown>) {
 			const raycastParams = new RaycastParams();
 			raycastParams.FilterType = Enum.RaycastFilterType.Blacklist;
 
-			const result = game.Workspace.Raycast(rayOrigin, rayDirection, raycastParams);
+			const result = game.Workspace.Raycast(rayOrigin, rayDirection as unknown as Vector3, raycastParams);
 
 			if (result) {
 				return {
@@ -217,7 +217,7 @@ function spatialQuery(requestData: Record<string, unknown>) {
 
 			instances.sort((a, b) => a.distance < b.distance);
 
-			const results = instances.slice(0, maxResults).map((item) => ({
+			const sliced: Array<{ instance: Instance; distance: number }> = []; for (let i = 0; i < math.min(maxResults, instances.size()); i++) { sliced.push(instances[i]); } const results = sliced.map((item) => ({
 				name: item.instance.Name,
 				className: item.instance.ClassName,
 				path: getInstancePath(item.instance),

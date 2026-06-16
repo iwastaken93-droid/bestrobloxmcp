@@ -287,7 +287,29 @@
 
 ---
 
+## D15: Phase 5 Implementation (Polish)
+
+**Date:** 2026-06-16
+**Decision:** Add web dashboard, VSCode extension scaffold, plugin auto-update, README update, and trim verbose tool descriptions.
+**Rationale:**
+- Web dashboard (`/dashboard`) gives users a quick visual status of connected instances without needing CLI tools
+- VSCode extension scaffold provides a foundation for IDE integration (power-user feature)
+- Plugin auto-update checks npm registry and prompts users when a new version is available
+- README.md modernized with clear setup instructions matching the rebranded package
+- Verbose tool descriptions in `definitions.ts` were bloating the LLM context window — trimming them reduces token usage while preserving critical information
+- Log prefixes updated from `[robloxstudio-mcp]` to `[bestrobloxmcp]` for brand consistency
+- Version mismatch warning now references the correct package name (`@bestrobloxmcp/bestrobloxmcp`)
+
+**Constraints:**
+- Dashboard is inline HTML (not React) — lightweight, no build step needed
+- VSCode extension is scaffold-only (placeholder commands) — full implementation deferred
+- Auto-update only checks npm; it does not auto-download (requires user action)
+- generate_build description must still list all primitive signatures so the LLM generates correct code
+- All 96 tests must pass after trimming descriptions
+
+---
+
 ## Last Updated
 
 Date: 2026-06-16
-Status: Phase 4 complete — 14 decisions recorded, build and tests passing
+Status: All phases complete — 15 decisions recorded, build and tests passing

@@ -254,6 +254,107 @@ export function createHttpServer(tools: RobloxStudioTools, bridge: BridgeService
     });
   });
 
+  app.get('/dashboard', (req, res) => {
+    const instances = bridge.getInstances();
+    const publicInstances = instances.map(toPublic);
+    const uptime = mcpServerActive ? Date.now() - mcpServerStartTime : 0;
+    const uptimeStr = uptime > 0
+      ? `${Math.floor(uptime / 60000)}m ${Math.floor((uptime % 60000) / 1000)}s`
+      : '0s';
+
+    const escapeHtml = (str: string) => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BestRobloxMCP Dashboard</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 2rem; }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { color: #38bdf8; margin-bottom: 0.5rem; }
+  .subtitle { color: #94a3b8; margin-bottom: 2rem; }
+  .card { background: #1e293b; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3); }
+  .card h2 { margin-top: 0; font-size: 1.1rem; color: #cbd5e1; border-bottom: 1px solid #334155; padding-bottom: 0.5rem; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+  .stat { background: #0f172a; border-radius: 8px; padding: 1rem; text-align: center; }
+  .stat-value { font-size: 1.5rem; font-weight: 600; color: #38bdf8; }
+  .stat-label { font-size: 0.85rem; color: #94a3b8; margin-top: 0.25rem; }
+  .status-ok { color: #22c55e; }
+  .status-warn { color: #eab308; }
+  .status-err { color: #ef4444; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #334155; }
+  th { color: #94a3b8; font-weight: 500; }
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 999px; font-size: 0.75rem; font-weight: 500; }
+  .badge-edit { background: #22c55e20; color: #22c55e; }
+  .badge-server { background: #3b82f620; color: #3b82f6; }
+  .badge-client { background: #a855f720; color: #a855f7; }
+  .badge-version { background: #ef444420; color: #ef4444; }
+  .footer { text-align: center; color: #64748b; font-size: 0.85rem; margin-top: 2rem; }
+  a { color: #38bdf8; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>BestRobloxMCP Dashboard</h1>
+  <div class="subtitle">v${escapeHtml(serverConfig?.version ?? 'unknown')} &middot; ${uptimeStr} uptime</div>
+
+  <div class="card">
+    <h2>Server Status</h2>
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-value ${instances.length > 0 ? 'status-ok' : 'status-err'}">${instances.length}</div>
+        <div class="stat-label">Connected Instances</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value ${isMCPServerActive() ? 'status-ok' : 'status-warn'}">${isMCPServerActive() ? 'Active' : 'Inactive'}</div>
+        <div class="stat-label">MCP Server</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value ${publicInstances.some((inst) => inst.versionMismatch) ? 'status-warn' : 'status-ok'}">${publicInstances.some((inst) => inst.versionMismatch) ? 'Mismatch' : 'OK'}</div>
+        <div class="stat-label">Plugin Versions</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">${bridge.getPendingRequestCount()}</div>
+        <div class="stat-label">Pending Requests</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Connected Instances</h2>
+    ${instances.length === 0 ? '<p style="color:#94a3b8">No instances connected.</p>' : `
+    <table>
+      <thead>
+        <tr><th>Place</th><th>Role</th><th>DM Name</th><th>Version</th></tr>
+      </thead>
+      <tbody>
+        ${publicInstances.map(inst => {
+          const roleClass = inst.role === 'edit' ? 'badge-edit' : inst.role === 'server' ? 'badge-server' : 'badge-client';
+          const versionBadge = inst.versionMismatch ? 'badge-version' : '';
+          return `<tr>
+            <td>${escapeHtml(inst.placeName || 'Unknown')} <span style="color:#64748b">(${escapeHtml(inst.instanceId)})</span></td>
+            <td><span class="badge ${roleClass}">${escapeHtml(inst.role)}</span></td>
+            <td>${escapeHtml(inst.dataModelName)}</td>
+            <td><span class="badge ${versionBadge}">${escapeHtml(inst.pluginVersion || '?')}</span></td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`}
+  </div>
+
+  <div class="footer">
+    <a href="/health">Raw JSON Health</a> &middot; <a href="https://github.com/bestrobloxmcp/bestrobloxmcp" target="_blank">GitHub</a>
+  </div>
+</div>
+</body>
+</html>`;
+    res.send(html);
+  });
+
 
   app.post('/ready', (req, res) => {
     const {

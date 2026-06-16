@@ -179,7 +179,7 @@ const routeMap: Record<string, Handler> = {
   "/api/manage-animation": AnimationHandlers.manageAnimation,
   "/api/spatial-query": SpatialHandlers.spatialQuery,
   "/api/manage-sync": SyncHandlers.manageSync,
-  "/api/manage-ui": UIHandlers.manageUI,
+  "/api/manage-ui": (data: Record<string, unknown>) => UIHandlers.manageUI(data),
 };
 
 function processRequest(request: RequestPayload): unknown {
@@ -266,7 +266,7 @@ function sendReady(conn: Connection): void {
 		const readyLogKey = `${conn.serverUrl}|${instanceId}|${readyRole}`;
 		if (!readyOk) {
 			readyFailureLogKeys.add(readyLogKey);
-			warn(`[robloxstudio-mcp] /ready failed for ${instanceId}/${readyRole}: ${HttpDiagnostics.formatRequestFailure(readyUrl, readyOk, readyResult)}`);
+			warn(`[bestrobloxmcp] /ready failed for ${instanceId}/${readyRole}: ${HttpDiagnostics.formatRequestFailure(readyUrl, readyOk, readyResult)}`);
 			return;
 		}
 		if (!readyResult.Success) {
@@ -283,10 +283,10 @@ function sendReady(conn: Connection): void {
 					ui.detailStatusLabel.Text = reason;
 					ui.detailStatusLabel.TextColor3 = Color3.fromRGB(239, 68, 68);
 				}
-				warn(`[robloxstudio-mcp] /ready rejected for ${instanceId}/${readyRole}: ${reason}`);
+				warn(`[bestrobloxmcp] /ready rejected for ${instanceId}/${readyRole}: ${reason}`);
 				return;
 			}
-			warn(`[robloxstudio-mcp] /ready rejected for ${instanceId}/${readyRole}: ${reason}`);
+			warn(`[bestrobloxmcp] /ready rejected for ${instanceId}/${readyRole}: ${reason}`);
 			return;
 		}
 		const [parseOk, readyData] = pcall(
@@ -298,7 +298,7 @@ function sendReady(conn: Connection): void {
 		const connectedRole = assignedRole ?? detectRole();
 		if (readyFailureLogKeys.has(readyLogKey)) {
 			readyFailureLogKeys.delete(readyLogKey);
-			print(`[robloxstudio-mcp] /ready connected for ${instanceId}/${connectedRole} via ${conn.serverUrl}`);
+			print(`[bestrobloxmcp] /ready connected for ${instanceId}/${connectedRole} via ${conn.serverUrl}`);
 		}
 	});
 }
@@ -339,7 +339,7 @@ function pollForRequests(connIndex: number) {
 			const warningKey = `${State.CURRENT_VERSION}:${serverVersion}`;
 			if (lastVersionMismatchWarningKey !== warningKey) {
 				lastVersionMismatchWarningKey = warningKey;
-				warn(`[robloxstudio-mcp] Version mismatch: Studio plugin v${State.CURRENT_VERSION} / MCP v${serverVersion}. Run npx -y @chrrxs/robloxstudio-mcp@latest --auto-install-plugin and restart Studio.`);
+				warn(`[bestrobloxmcp] Version mismatch: Studio plugin v${State.CURRENT_VERSION} / MCP v${serverVersion}. Run npx -y @bestrobloxmcp/bestrobloxmcp@latest --auto-install-plugin and restart Studio.`);
 			}
 			UI.showBanner("version-mismatch", `Plugin v${State.CURRENT_VERSION} / MCP v${serverVersion} mismatch`);
 		} else if (hasVersionMismatch) {
@@ -560,7 +560,7 @@ function checkForUpdates() {
 	task.spawn(() => {
 		const [success, result] = pcall(() => {
 			return HttpService.RequestAsync({
-				Url: "https://registry.npmjs.org/@chrrxs/robloxstudio-mcp/latest",
+				Url: "https://registry.npmjs.org/@bestrobloxmcp/bestrobloxmcp/latest",
 				Method: "GET",
 				Headers: { Accept: "application/json" },
 			});
@@ -572,7 +572,7 @@ function checkForUpdates() {
 				const latestVersion = data.version;
 				if (Utils.compareVersions(State.CURRENT_VERSION, latestVersion) < 0) {
 					if (!hasVersionMismatch) {
-						UI.showBanner("update", `v${latestVersion} available - github.com/chrrxs/robloxstudio-mcp`);
+						UI.showBanner("update", `v${latestVersion} available - github.com/bestrobloxmcp/bestrobloxmcp`);
 					}
 				}
 			}
