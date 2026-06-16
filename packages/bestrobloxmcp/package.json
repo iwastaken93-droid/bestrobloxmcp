@@ -29,6 +29,14 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iwastaken93-droid/bestrobloxmcp.git"
+  },
+  "homepage": "https://github.com/iwastaken93-droid/bestrobloxmcp#readme",
+  "bugs": {
+    "url": "https://github.com/iwastaken93-droid/bestrobloxmcp/issues"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.27.1",
     "cors": "^2.8.5",

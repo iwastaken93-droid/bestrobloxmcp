@@ -11,6 +11,14 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iwastaken93-droid/bestrobloxmcp.git"
+  },
+  "homepage": "https://github.com/iwastaken93-droid/bestrobloxmcp#readme",
+  "bugs": {
+    "url": "https://github.com/iwastaken93-droid/bestrobloxmcp/issues"
+  },
   "devDependencies": {
     "@modelcontextprotocol/sdk": "^1.27.1",
     "@types/cors": "^2.8.17",

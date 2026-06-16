@@ -3,6 +3,8 @@
 > The best Roblox Studio MCP server — all features free, MIT open source.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm](https://img.shields.io/npm/v/@bestrobloxmcp/bestrobloxmcp)](https://www.npmjs.com/package/@bestrobloxmcp/bestrobloxmcp)
+[![GitHub](https://img.shields.io/badge/GitHub-iwastaken93--droid%2Fbestrobloxmcp-blue?logo=github)](https://github.com/iwastaken93-droid/bestrobloxmcp)
 
 ## What is this?
 
@@ -95,6 +97,10 @@ When the server is running, open `http://localhost:58741/dashboard` in your brow
 - [context.md](context.md) — Research context
 - [decisions.md](decisions.md) — Architecture decisions
 - [progress.md](progress.md) — Current progress
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, conventions, and how to add new tools.
 
 ## License
 
